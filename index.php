@@ -7,5 +7,9 @@
 </head>
 <body>
     <h1> Registro de Eventos Wow </h1>
+
+    <form action="">
+        formulario
+    </form>
 </body>
 </html> 
