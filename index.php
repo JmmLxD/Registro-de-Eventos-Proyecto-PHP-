@@ -1,3 +1,9 @@
+<?php 
+    session_start();
+    
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +12,28 @@
     <title>Document</title>
 
     <style>
+
+        *
+        {
+            font-family: Arial, Helvetica, sans-serif;
+            box-sizing: border-box;
+        }
+
+        .msg
+        {
+            margin: 0 auto;
+            width: 80%;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            background-color: grey;
+            color: white;
+        }
+
+        .msg p
+        {
+            margin: 0.3rem 0;
+        }
+
         form
         {
             border: solid 1px grey;
@@ -17,7 +45,23 @@
 <body>
     <h1> Registro de Eventos Wow </h1>
 
-    <form id="register-form" action="./register/validate.php" method="POST">
+    <?php 
+        if(!empty($_SESSION["errores-registro"]) )
+        {
+            echo "<div class='msg'>";
+
+            for($i = 0 ; $i < count($_SESSION["errores-registro"]) ; $i++)
+            {
+                echo "<p>" .  $_SESSION["errores-registro"][$i] . "</p>";
+            }
+
+            echo "</div>";
+        }
+    
+    ?>
+
+
+    <form id="register-form" action="./registro.php" method="POST">
         <h2> log in </h2>
         
         <div>
@@ -49,16 +93,35 @@
             <input type="email" name="email"   id="email-input-register">
         </div>
         <div>
+            <label for="direccion-input-register"> direccion </label>
+            <input type="text" name="direccion"   id="direccion-input-register">
+        </div>
+        <div>
             <input type="radio" id="sexo-hombre-radio-register" name="sexo" value="hombre" checked>
             <label for="sexo-hombre-radio-register"> hombre </label>
-            <input type="radio" id="sexo-hombre-mujer-register" name="sexo" value="hombre" checked>
-            <label for="sexo-hombre-radio-register"> mujer </label>
+            <input type="radio" id="sexo-mujer-radio-register" name="sexo" value="mujer" checked>
+            <label for="sexo-mujer-radio-register"> mujer </label>
         </div>
 
         <button type="submit"> Entrar </button>
     </form>
+    
+    <?php 
+        if(!empty($_SESSION["errores-login"]) )
+        {
+            echo "<div class='msg'>";
 
-    <form id="login-form" action="./validate-login.php" method="POST">
+            for($i = 0 ; $i < count($_SESSION["errores-login"]) ; $i++)
+            {
+                echo "<p>" .  $_SESSION["errores-login"][$i] . "</p>";
+            }
+
+            echo "</div>";
+        }
+    
+    ?>
+
+    <form id="login-form" action="./login.php" method="POST">
         <h2> log in </h2>
         
         <div>

@@ -1,9 +1,54 @@
 <?php
+    
     session_start();
-    $userIsLogged = isset($_SESSION["user-logged"]);
+    if(isset($_POST["delete-all"]))
+    {
+        session_unset();
+    }
     $userData = null;
-    if($userIsLogged)
+    if( !isset($_SESSION["user-logged"]) )
+    {
+        header("Location: ./index.php");
+        die();
+    }
+    else
         $userData = $_SESSION["user-data"];
+
+    function printTable()
+    {
+        require_once "./database_connection.php";
+
+        $query = "SELECT * FROM  eventos_comprados AS e
+                    INNER JOIN usuarios AS u ON e.username_comprador = u.username";
+
+        $stmt = $con->query( $query );
+        
+        ?>  
+            <table>
+            <tr>
+                <th> Nombre </th>
+                <th> Apellido </th>
+                <th> Cedula </th>
+                <th> Nombre de Evento </th>
+                <th> Ubicacion </th>
+            </tr>
+        <?php
+        while( $row = $stmt->fetch(PDO::FETCH_ASSOC) )
+        {
+            ?>
+                <tr>
+                    <td> <?php echo $row["nombre"] ?> </td>
+                    <td> <?php echo $row["apellido"] ?>  </td>
+                    <td> <?php echo $row["cedula"] ?>  </td>
+                    <td> <?php echo $row["nombre_evento"] ?>  </td>
+                    <td> <?php echo $row["ubicacion"] ?>  </td>
+                </tr>
+            <?php
+        }
+
+
+        echo "</table>";
+    }
 
 ?>
 
@@ -14,27 +59,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+
+    <style>
+        form
+        {
+            border: solid 1px grey;
+            padding: 1rem;
+        }    
+    </style>
 </head>
 <body>
 
-    <?php if($userIsLogged) { ?>
-        <h1>everything went kind of ok</h1>
-        <ul>
-            <li>
-                <p> Nombre : <?php echo $userData["nombre"] ?> </p>
-            </li>
-            <li>
-                <p> Apellido : <?php echo $userData["apellido"] ?> </p>
-            </li>
-            <li>
-                <p> username : <?php echo $userData["username"] ?> </p>
-            </li>
-            <li>
-                <p> Telefono : <?php echo $userData["telefono"] ?> </p>
-            </li>
-        </ul>
-    <?php } else { ?>
-        <h1>everything went kind of awaful</h1>
+    <form action="main.php" method="POST">
+        <input type="hidden" name="delete-all" value="true">
+        <button type="submit"> cerrar seccion </button>
+    </form>
+    <h1>everything went kind of ok</h1>
+    <ul>
+        <li>
+            <p> Nombre : <?php echo $userData["nombre"] ?> </p>
+        </li>
+        <li>
+            <p> Apellido : <?php echo $userData["apellido"] ?> </p>
+        </li>
+        <li>
+            <p> username : <?php echo $userData["username"] ?> </p>
+        </li>
+        <li>
+            <p> Telefono : <?php echo $userData["telefono"] ?> </p>
+        </li>
+    </ul>
+
+
+    <form action="validate-compra-evento.php" method="POST">
+        <h2> Compra de Evento </h2>
+        <div>
+            <label for="nombre-input"> Nombre </label>
+            <input type="text" name="nombre"   id="nombre-input">
+        </div>
+        <div>
+            <label for="serial-input"> Numero de Serial del boleto </label>
+            <input type="number" name="serial"   id="serial-input">
+        </div>
+        <div>
+            <label for="fecha-input"> Fecha del evento </label>
+            <input type="date" name="fecha"   id="fecha-input">
+        </div>
+        <div>
+            <label for="ubicacion-input"> Ubicacion </label>
+
+            <select name="ubicacion" id="ubicacion-input">
+                <option value="altos" selected> Altos </option>
+                <option value="medios"> Medios </option>
+                <option value="vip"> VIP </option>
+                <option value="platino"> Platino </option>
+            </select>
+        </div>
+
+        <button type="submit"> Enviar datos </button>
+
+
+    </form>
+
+
+
+    <?php if ($userData["admin"]) { ?>
+        <div>
+            <h2>opciones de admin</h2>
+            <?php printTable() ?>
+        </div>
     <?php } ?>
+
 </body>
 </html>
