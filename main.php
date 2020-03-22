@@ -13,43 +13,6 @@
     }
     else
         $userData = $_SESSION["user-data"];
-
-    function printTable()
-    {
-        require_once "./database_connection.php";
-
-        $query = "SELECT * FROM  eventos_comprados AS e
-                    INNER JOIN usuarios AS u ON e.username_comprador = u.username";
-
-        $stmt = $con->query( $query );
-        
-        ?>  
-            <table>
-            <tr>
-                <th> Nombre </th>
-                <th> Apellido </th>
-                <th> Cedula </th>
-                <th> Nombre de Evento </th>
-                <th> Ubicacion </th>
-            </tr>
-        <?php
-        while( $row = $stmt->fetch(PDO::FETCH_ASSOC) )
-        {
-            ?>
-                <tr>
-                    <td> <?php echo $row["nombre"] ?> </td>
-                    <td> <?php echo $row["apellido"] ?>  </td>
-                    <td> <?php echo $row["cedula"] ?>  </td>
-                    <td> <?php echo $row["nombre_evento"] ?>  </td>
-                    <td> <?php echo $row["ubicacion"] ?>  </td>
-                </tr>
-            <?php
-        }
-
-
-        echo "</table>";
-    }
-
 ?>
 
 
@@ -117,18 +80,17 @@
         </div>
 
         <button type="submit"> Enviar datos </button>
-
-
     </form>
 
+    <?php 
+    
+    if( $userData["admin"] )
+    {
+        echo "<a href='./admin.php'> Opciones de Admin  </a>";
+    }
+    
+    ?>
 
-
-    <?php if ($userData["admin"]) { ?>
-        <div>
-            <h2>opciones de admin</h2>
-            <?php printTable() ?>
-        </div>
-    <?php } ?>
 
 </body>
 </html>
