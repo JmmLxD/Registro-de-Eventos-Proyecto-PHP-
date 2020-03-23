@@ -139,5 +139,24 @@
         <button type="submit"> Entrar </button>
     </form>
 
+    
+    <form id="login-form" action="./prueba.php" method="POST">
+        <h2> log in </h2>
+        
+        <div>
+            <label for="username-input-login"> Nombre de usuario </label>
+            <input type="text" name="username"   id="username-input-login">
+        </div>
+
+
+        <div>
+            <label for="password-input-login"> contraña </label>
+            <input type="password" name="password"   id="password-input-login">
+        </div>
+
+
+        <button type="submit"> Entrar </button>
+    </form>
+
 </body>
 </html> 
