@@ -1,18 +1,20 @@
 <?php
     session_start();
+
+    if(  isset( $_POST["username"] )  )
+        $_SESSION["login-data"]["username"] = $_POST["username"];
+    if( isset( $_POST["password"] ) )
+    {
+        $_SESSION["login-data"]["password"] = $_POST["password"];
+    }
+
     if( loginDataIsSet()  )
     {
-        $_SESSION["errores-login"] = [];
-        if( $_POST["username"] == "" )
-            array_push($_SESSION["errores-login"],"nombre de usuario esta vacio");
-        if( $_POST["password"] == "")
-            array_push($_SESSION["errores-login"],"contraseña esa vacio");
-        if( count($_SESSION["errores-login"]) > 0 )
-        {
-            header("Location: ./index.php");
-            die();
-        }
-        else
+        if( $_POST["password"] == "" )
+            $_SESSION["login-error-msg"] = "el campo contraseña esta vacio";
+        else if( $_POST["username"] == "" )
+            $_SESSION["login-error-msg"] = "el campo username esta vacio";
+        else 
         {
             require_once "./database_connection.php";
             $stmt = $con->prepare("select * from usuarios where username = :username && password = :password");
@@ -26,23 +28,18 @@
                     $usuario = $arr[0];
                     $_SESSION["user-logged"] = true;
                     $_SESSION["user-data"] = $usuario;
+                    unset( $_SESSION["login-data"] );
                     header("Location: ./main.php");
                     die();
                 }
                 else
-                {
-                    array_push($_SESSION["errores-login"],"usuario y contraseña no concuerdan");
-                    header("Location: ./index.php");
-                    die();
-                }
+                    $_SESSION["login-error-msg"] = "la contraseña o el usuario estan erroneas";
             }
         }
     }
-    else
-    {
-        header("Location: ./index.php");
-        die();
-    }
+
+    header("Location: ./index.php");
+    die();
 
     function loginDataIsSet()
     {

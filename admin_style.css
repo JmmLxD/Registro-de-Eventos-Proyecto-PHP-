@@ -1,0 +1,265 @@
+
+/*------------------- TABLA DE EVENTOS ------------------------------------*/
+
+.tabla-de-eventos
+{
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.tabla-de-eventos , .tabla-de-eventos tr ,.tabla-de-eventos td ,.tabla-de-eventos th
+{
+    border: rgb(170, 155, 95) 2px solid;
+}
+
+.tabla-de-eventos td , .tabla-de-eventos th
+{
+    padding: 0.3rem;
+    text-align: center;
+} 
+
+/*  --------------------------- HEADER ------------------------------------------*/
+
+body > header
+{
+    padding: 0 3rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffcc00;
+}   
+
+
+header h1
+{
+    color: #222;
+}
+
+.btn-header
+{
+    border-bottom: #222 solid 2px;
+    display: inline-block;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+
+    color: #222;
+    text-decoration: none;
+}
+.btn-header:visited
+{
+    color: #222;
+}
+.btn-header:hover
+{
+    color: #666;
+}
+
+/*    other stuff  */
+
+body , html , table , td , th , tr 
+{
+    background-color: rgb(250, 250 , 250 );
+}
+
+body , html 
+{
+    font-family: Arial, Helvetica, sans-serif;
+    margin : 0;
+    padding: 0;
+}
+
+/* --------------------------- reponsive container --------------------------- */
+#main
+{
+    margin:  0 auto;
+}
+
+@media (max-width: 1000px) 
+{ 
+    #main
+    {
+        width: 60%;
+    }
+}
+
+@media (min-width: 1000px) 
+{ 
+    #main
+    {
+        width: 70%;
+    }
+}
+
+
+*
+{
+    box-sizing: border-box;
+}
+
+/* ------------------------------DATA DE REGISTRO--------------------- */
+
+.registro-data-tr ul
+{
+    padding:0;
+    text-align: left;
+    margin: 0;
+    list-style: none;
+}
+
+.registro-data-tr h3 ,  .registro-data-tr p
+{
+
+    text-align: left;
+}
+
+
+.info-username
+{
+    text-decoration: underline;
+}
+
+.close-btn
+{
+    font-size: 1.05rem;
+    color: grey;
+    font-weight: bolder;
+}
+
+.close-btn:hover
+{
+    color:#802626;
+}
+
+
+/*  ------------------------------DATA DE REGISTRO y EDITAR REGISTRO--------------------- */
+
+.registro-data-tr td , .edit-data-tr td
+{
+    padding: 1rem;
+    padding-top: 0;
+    padding-bottom: 2rem;
+}
+
+.registro-data-tr h3 , .edit-data-tr h3
+{
+    margin: 0.6rem 0;
+    font-size: 1.2rem;
+    color: rgb(68, 95, 6);
+}
+
+.edit-data-tr button 
+{
+    margin-top: 0.4rem;
+    font-size: 1rem;
+    color : rgb(29, 29, 29);
+    background-color: #FFCC00;
+    border: solid 1px  #EEBB00 ;
+    border-radius: 0.4rem;
+    padding: 0.2rem 0.6rem;
+}
+
+
+
+.information-container 
+{
+    display: flex;
+    border-top: #FFCC00 1px solid;
+    justify-content: space-around;
+    padding-top: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.edit-data-tr main form
+{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    border-top: #FFCC00 1px solid;
+    justify-content: space-around;
+    padding-top: 1.2rem;
+    flex-wrap: wrap;
+}
+
+.edit-data-tr main form div
+{
+    width: 25rem;
+}
+
+.form-group
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0.6rem 0;
+}
+
+
+.registro-data-tr header , .edit-data-tr header
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+    flex-wrap: nowrap;
+}
+
+.information-container div
+{
+    width: 25rem;
+    max-width: 100%;
+}
+
+
+
+
+
+.information-container ul li
+{
+    display: flex;
+    padding: 0.5rem;
+    justify-content: space-between;
+    border-bottom: rgb(170, 155, 95) 1px solid;
+}
+
+.information-container h4 
+{
+    color: rgb(68, 95, 6);
+    margin: 0;
+    padding:0.5rem;
+    border-bottom: rgb(170, 155, 95) 1px solid;
+}
+
+
+/* este div se deberia cambiar por algo mas */
+.information-container div li 
+{
+    text-align: center;
+}
+
+
+/* botones de las tablas */
+
+table button
+{
+    border: none;
+    outline: none;
+    background: none;
+}
+
+table button:hover img 
+{
+    filter: invert(73%) sepia(31%) saturate(3963%) hue-rotate(349deg) brightness(99%) contrast(105%);
+    
+}
+
+table .btn-active img
+{
+    filter: invert(73%) sepia(31%) saturate(3963%) hue-rotate(349deg) brightness(99%) contrast(105%);
+}
+
+.btn-img 
+{
+    width:2rem;
+}

@@ -13,7 +13,16 @@
         die();
     }
 
+    require_once "./database_connection.php";
 
+    $stmt = $con->query("SELECT nombre,id from eventos;");
+
+    $eventos = [];
+
+    while($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    {
+        array_push($eventos,$row);
+    }
 
     function printTable()
     {
@@ -62,112 +71,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title> admin </title>
-    <style>
-        .tabla-de-eventos
-        {
-            width: 100%;
-            table-layout: fixed;
-            border-collapse: collapse;
-        }
-
-        .tabla-de-eventos , .tabla-de-eventos tr ,.tabla-de-eventos td ,.tabla-de-eventos th
-        {
-            border: grey 1px solid; 
-        }
-
-        .tabla-de-eventos td , .tabla-de-eventos th
-        {
-            padding: 0.3rem;
-            text-align: center;
-        } 
-
-        .btn-img 
-        {
-            width:2rem;
-        }
-
-        body , html 
-        {
-            
-            font-family: Arial, Helvetica, sans-serif;
-            margin : 0;
-            padding: 0;
-        }
-        #main
-        {
-            width: 70%;
-            margin:  0 auto;
-        }
-        #tabla-de-eventos thead th:nth-child(1) { width: 15%; }
-        #tabla-de-eventos thead th:nth-child(2) { width: 15%; }
-        #tabla-de-eventos thead th:nth-child(3) { width: 8%; }
-        #tabla-de-eventos thead th:nth-child(4) { width: 30%; }
-        #tabla-de-eventos thead th:nth-child(5) { width: 15%; }
-        #tabla-de-eventos thead th:nth-child(5) { width: 7%; }
-        #tabla-de-eventos thead th:nth-child(6) { width: 12%; }
-
-        body header
-        {
-            padding: 0 3rem;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #ffcc00;
-        }   
-
-        header h1
-        {
-            color: #222;
-        }
-
-        .btn-header
-        {
-            border-bottom: #222 solid 2px;
-            display: inline-block;
-            margin: 0 1rem;
-            font-size: 1.2rem;
-
-            color: #222;
-            text-decoration: none;
-        }
-        .btn-header:visited
-        {
-            color: #222;
-        }
-        .btn-header:hover
-        {
-            color: #666;
-        }
-
-        .data-tr 
-        {
-            column-span: all;
-        }
-
-        .evento-data-tr ul
-        {
-            padding:0;
-            text-align: left;
-            margin: 0;
-            list-style: none;
-        }
-
-        .evento-data-tr h3 ,  .evento-data-tr p
-        {
-            text-align: left;
-        }
-
-    </style>
-
+    <link rel="stylesheet" href="admin_style.css">
     <script src="./admin.js"></script>
 </head>
 <body>
     <header>
-        <h1> Registro para Eventos </h1>
+        <h1> Panel Admin </h1>
         <div id="acciones">
-            <a class="btn-header" href=""> Registro de Eventos </a>
+            <a class="btn-header" href="main.php"> Registrar Boleto </a>
+            <a class="btn-header" href="agregar_evento.php"> Agregar Evento </a>
             <a class="btn-header" href="cerrar_sesion.php"> Cerrar Sesión </a>
+            
         </div>
         
     </header>
@@ -179,45 +93,59 @@
 
 
     <template id="evento-row-template">
-        <tr class="evento-data-tr">
-            <td class="td-field-nombre"> </td>
+        <tr>
+            <td class="td-field-nombre_comprador"> </td>
             <td class="td-field-apellido"> </td>
             <td class="td-field-cedula"> </td>
             <td class="td-field-nombre_evento"> </td>
             <td class="td-field-ubicacion"> </td>
             <td>  
-                <button class="table-btn-show"> <img class="btn-img" src="ver.svg" alt="ver-img"> </button> 
-                <button class="table-btn-edit"> <img class="btn-img" src="editar.svg" alt="editar-img"> </button> 
-                <button class="table-btn-delete"> <img class="btn-img" src="borrar.svg" alt="borrar-img"> </button>  
+                <button title="ver detalles del registro" class=" table-btn-show"> 
+                    <img class="btn-img" src="ver.svg" alt="ver-img"> 
+                </button> 
+                <button title="editar registro" class="table-btn-edit"> 
+                    <img class="btn-img" src="editar.svg" alt="editar-img"> 
+                </button> 
+                <button title="eliminar registro" class="table-btn-delete"> 
+                    <img class="btn-img" src="borrar.svg" alt="borrar-img"> 
+                </button>  
             </td>
         </tr>
     </template>
 
 
     <template id="show-datos-template">
-        <tr class="evento-data-tr">
+        <tr class="registro-data-tr">
             <td colspan="6">
-                <div>
+                <header>
                     <h3> Datos de Compra </h3>
-                    <p>Datos de Evento</p>
-                    <ul class="lista-datos" >
-                        <li> serial : <span class="info-serial info-span"></span> </li>
-                        <li> nombre de evento : <span class="info-nombre_evento info-span"></span> </li>
-                        <li> fecha : <span class="info-fecha info-span"> </span></li>
-                        <li> ubicacion : <span class="info-ubicacion info-span"></span> </li>
-                    </ul>
-                    <p>Datos de Usuario <span class="info-username info-span"></span> </p>
-                    <ul class="lista-datos" >
-                        <li> nombre : <span class="info-nombre info-span"></span> </li>
-                        <li> apellido : <span class="info-apellido info-span"></span> </li>
-                        <li> cedula : <span class="info-cedula info-span"></span> </li>
-                        <li> direccion : <span class="info-ubicacion info-span"></span> </li>
-                        <li> sexo : <span class="info-sexo info-span"> </span>  </li>
-                        <li> telefono : <span class="info-telefono info-span"></span> </li>
-                        <li> email : <span class="info-email info-span"></span>  </li>   
-                    </ul>
-                    <button class="close-btn"> Cerrar Data </button>
-                </div>
+                    <button class="close-btn"> Cerrar Ventana </button>
+                </header>
+
+                <main class="information-container">
+                    <div>
+                        <h4>Datos de Evento</h4>
+                        <ul class="lista-dato" >
+                            <li><span> serial : </span><span class="info-serial info-span"></span> </li>
+                            <li><span> nombre de evento : </span><span class="info-nombre_evento info-span"></span> </li>
+                            <li><span> fecha : </span><span class="info-fecha info-span"> </span></li>
+                            <li><span> ubicacion : </span><span class="info-ubicacion info-span"></span> </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4>Datos de Usuario <span class="info-username info-span"></span> </h4>
+                        <ul class="lista-datos" >
+                            <li><span> nombre : </span><span class="info-nombre_comprador info-span"></span> </li>
+                            <li><span> apellido : </span><span class="info-apellido info-span"></span> </li>
+                            <li><span> cedula : </span><span class="info-cedula info-span"></span> </li>
+                            <li><span> direccion : </span><span class="info-direccion info-span"></span> </li>
+                            <li><span> sexo : </span><span class="info-sexo info-span"> </span>  </li>
+                            <li><span> telefono : </span><span class="info-telefono info-span"></span> </li>
+                            <li><span> email : </span><span class="info-email info-span"></span>  </li>   
+                        </ul>
+                    </div>
+                </main>
             </td>
         </tr>
     </template>
@@ -226,36 +154,46 @@
         <tr class="edit-data-tr">
             <td colspan="6">
                 <div>
-                    <h3> Editar Data </h3>
-                    <form>
-                        <div>
-                            <label for="comprador-username-input"> Comprador (username) </label>
-                            <input type="text" name="username-comprador" id="comprador-username-input"> 
-                        </div>
-                        <div>
-                            <label for="nombre-input"> Nombre </label>
-                            <input type="text" name="nombre" id="nombre-input"> 
-                        </div>
-                        <div>
-                            <label for="serial-input"> Numero de Serial del boleto </label>
-                            <input type="number" name="serial"   id="serial-input">
-                        </div>
-                        <div>
-                            <label for="fecha-input"> Fecha del evento </label>
-                            <input type="date" name="fecha"   id="fecha-input">
-                        </div>
-                        <div>
-                            <label for="ubicacion-input"> Ubicacion </label>
+                    <header>
+                        <h3> Editar Data </h3>
+                    </header>
+                        <main>
+                            <form>
+                                <div>
+                                    <div class="form-group"> 
+                                        <label for="comprador-username-input"> Comprador (username) </label>
+                                        <select name="username" id="comprador-username-input">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="evento-input"> Evento </label>
+                                        <select name="evento" id="evento-input">
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="serial-input"> Numero de Serial del boleto </label>
+                                        <input type="number" name="serial"   id="serial-input">
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="form-group">
+                                        <label for="fecha-input"> Fecha del evento </label>
+                                        <input type="date" name="fecha"   id="fecha-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ubicacion-input"> Ubicacion </label>
 
-                            <select name="ubicacion" id="ubicacion-input">
-                                <option value="altos" selected> Altos </option>
-                                <option value="medios"> Medios </option>
-                                <option value="vip"> VIP </option>
-                                <option value="platino"> Platino </option>
-                            </select>
-                        </div>
-                        <button type="submit"> Aplicar Cambios </button>
-                    </form>
+                                        <select name="ubicacion" id="ubicacion-input">
+                                            <option value="altos" selected> Altos </option>
+                                            <option value="medios"> Medios </option>
+                                            <option value="vip"> VIP </option>
+                                            <option value="platino"> Platino </option>
+                                        </select>
+                                    </div>
+                                    <button type="submit"> Aplicar Cambios </button>
+                                </div>
+                            </form>
+                    </main>
                 </div>
             </td>
         </tr>
